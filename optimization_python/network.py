@@ -1,11 +1,15 @@
 import random
 import numpy as np
 
+DIRECTORY = "C:\\Users\\snowl\\Documents\\CS\\csc258\\" \
+            "final_project\\optimization_python"
+
 
 class Network(object):
     """
     Basic neural network created by Michael Nielson
     Updated for Python 3 and clarity
+    Added threshold check (95%) for optimization work
 
     === Private attributes ===
     num_layers: number of layers, including inputs and outputs
@@ -24,6 +28,7 @@ class Network(object):
         self._biases = [np.random.randn(y, 1) for y in sizes[1:]]
         self._weights = [np.random.randn(y, x)
                          for x, y in zip(sizes[:-1], sizes[1:])]
+        self._written = False
 
     def feed_forward(self, a) -> float:
         """Return the output of the network if 'a' is input"""
@@ -32,7 +37,7 @@ class Network(object):
         return a
 
     def sg_descent(self, training_data: list, epochs: int, mini_batch_size: int
-                   , eta: float, test_data=None) -> None:
+                   , eta: float, test_data: list) -> None:
         """Train the network using mini-batch stochastic gradient descent"""
         if test_data:
             n_test = len(test_data)
@@ -46,8 +51,12 @@ class Network(object):
             for mini_batch in mini_batches:
                 self.update_mini_batch(mini_batch, eta)
             if test_data:
+                successes = self.evaluate(test_data)
                 print("Epoch {0}: {1} / {2}".format(
-                    j, self.evaluate(test_data), n_test))
+                    j, successes, n_test))
+                if successes / n_test > 0.95:
+                    self.write_data()
+                    break
             else:
                 print("Epoch {0} complete".format(j))
 
@@ -110,6 +119,16 @@ class Network(object):
         partial C_x / partial a
         for the output activations."""
         return output_activations - y
+
+    def write_data(self) -> None:
+        """Adds the data of the neural network to the tracking file"""
+        new_file = DIRECTORY + "\\possible_setups.txt"
+        with open(new_file, "a") as possible_setups:
+            write = str(self.sizes).strip("[")
+            write.strip("]")
+            write.replace(" ", "")
+            possible_setups.write(write)
+        print("Threshold reached.")
 
 
 def sigmoid(z):
