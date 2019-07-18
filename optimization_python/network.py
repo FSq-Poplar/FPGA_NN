@@ -125,8 +125,8 @@ class Network(object):
         new_file = DIRECTORY + "\\possible_setups.txt"
         with open(new_file, "a") as possible_setups:
             write = str(self.sizes).strip("[")
-            write.strip("]")
-            write.replace(" ", "")
+            write = write.strip("]")
+            write = write.replace(" ", "")
             possible_setups.write(write)
         print("Threshold reached.")
 

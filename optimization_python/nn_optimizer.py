@@ -3,7 +3,7 @@ import mnist_loader
 
 DIRECTORY = "C:\\Users\\snowl\\Documents\\CS\\csc258\\" \
             "final_project\\optimization_python"
-MAX_MIN = (1, 3, 10, 20, 5)
+MAX_MIN = (1, 5, 15, 35, 5)
 
 
 def build_lists(min_hidden: int, max_hidden: int,
@@ -41,7 +41,7 @@ def find_optimal() -> None:
                 best_setup = sizes
     with open(networks, "a") as possible_setups:
         possible_setups.write("Best setup: " + str(best_setup))
-                
+
 
 if __name__ == '__main__':
     test_sizes = build_lists(MAX_MIN[0], MAX_MIN[1],
