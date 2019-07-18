@@ -3,11 +3,11 @@ import mnist_loader
 
 DIRECTORY = "C:\\Users\\snowl\\Documents\\CS\\csc258\\" \
             "final_project\\optimization_python"
-MAX_MIN = (1, 5, 15, 35, 5)
+MAX_MIN = (1, 5, 15, 35, 5, 3)
 
 
-def build_lists(min_hidden: int, max_hidden: int,
-                min_neurons: int, max_neurons: int, neuron_step: int) -> list:
+def build_lists(min_hidden: int, max_hidden: int, min_neurons: int,
+                max_neurons: int, neuron_step: int, runs: int) -> list:
     """Creates a list of network sizes to try based on five inputs"""
     ret = []
     layers = min_hidden
@@ -23,6 +23,10 @@ def build_lists(min_hidden: int, max_hidden: int,
             ret.append(add)
             neurons += neuron_step
         layers += 1
+    counter2 = 0
+    final_ret = []
+    while counter2 < runs:
+        final_ret += ret
     return ret
 
 
@@ -45,7 +49,7 @@ def find_optimal() -> None:
 
 if __name__ == '__main__':
     test_sizes = build_lists(MAX_MIN[0], MAX_MIN[1],
-                             MAX_MIN[2], MAX_MIN[3], MAX_MIN[4])
+                             MAX_MIN[2], MAX_MIN[3], MAX_MIN[4], MAX_MIN[5])
     training_data, validation_data, test_data = mnist_loader.load_data_wrapper()
 
     for test_size in test_sizes:
