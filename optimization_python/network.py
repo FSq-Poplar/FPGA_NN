@@ -127,7 +127,7 @@ class Network(object):
             write = str(self.sizes).strip("[")
             write = write.strip("]")
             write = write.replace(" ", "")
-            possible_setups.write(write)
+            possible_setups.write(write + "\n")
         print("Threshold reached.")
 
 
