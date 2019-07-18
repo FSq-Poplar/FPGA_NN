@@ -27,7 +27,8 @@ def build_lists(min_hidden: int, max_hidden: int, min_neurons: int,
     final_ret = []
     while counter2 < runs:
         final_ret += ret
-    return ret
+        counter2 += 1
+    return final_ret
 
 
 def find_optimal() -> None:
