@@ -3,12 +3,12 @@ import mnist_loader
 
 DIRECTORY = "C:\\Users\\snowl\\Documents\\CS\\csc258\\" \
             "final_project\\optimization_python"
-MAX_MIN = (1, 5, 15, 35, 5, 3)
+MAX_MIN = (1, 3, 24, 28, 4, 3)
 
 
 def build_lists(min_hidden: int, max_hidden: int, min_neurons: int,
                 max_neurons: int, neuron_step: int, runs: int) -> list:
-    """Creates a list of network sizes to try based on five inputs"""
+    """Creates a list of network sizes to try based on six inputs"""
     ret = []
     layers = min_hidden
     while layers <= max_hidden:
@@ -55,6 +55,6 @@ if __name__ == '__main__':
 
     for test_size in test_sizes:
         net = network.Network(test_size)
-        net.sg_descent(training_data, 30, 10, 3.0, test_data=test_data)
+        net.batch_gradient_descent(training_data, 30, 10, 0.1, test_data=test_data)
 
     find_optimal()

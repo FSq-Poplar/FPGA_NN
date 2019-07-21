@@ -7,8 +7,9 @@ DIRECTORY = "C:\\Users\\snowl\\Documents\\CS\\csc258\\" \
 
 class Network(object):
     """
-    Basic neural network created by Michael Nielson
+    Basic neural network originally created by Michael Nielson
     Updated for Python 3 and clarity
+    Changed stochastic gradient descent to batch gradient descent
     Added threshold check (95%) for optimization work
 
     === Private attributes ===
@@ -23,12 +24,12 @@ class Network(object):
     _weights: list
 
     def __init__(self, sizes: list):
+        """Creates the network with random weights and biases"""
         self.num_layers = len(sizes)
         self.sizes = sizes
         self._biases = [np.random.randn(y, 1) for y in sizes[1:]]
         self._weights = [np.random.randn(y, x)
                          for x, y in zip(sizes[:-1], sizes[1:])]
-        self._written = False
 
     def feed_forward(self, a) -> float:
         """Return the output of the network if 'a' is input"""
@@ -36,8 +37,8 @@ class Network(object):
             a = sigmoid(np.dot(w, a)+b)
         return a
 
-    def sg_descent(self, training_data: list, epochs: int, mini_batch_size: int
-                   , eta: float, test_data: list) -> None:
+    def batch_gradient_descent(self, training_data: list, epochs: int, mini_batch_size: int
+                               , eta: float, test_data: list) -> None:
         """Train the network using mini-batch stochastic gradient descent"""
         if test_data:
             n_test = len(test_data)
@@ -53,7 +54,7 @@ class Network(object):
             if test_data:
                 successes = self.evaluate(test_data)
                 print("Epoch {0}: {1} / {2}".format(
-                    j, successes, n_test))
+                    j + 1, successes, n_test))
                 if successes / n_test > 0.95:
                     self.write_data()
                     break
