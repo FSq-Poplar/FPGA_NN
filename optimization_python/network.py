@@ -3,6 +3,7 @@ import numpy as np
 
 DIRECTORY = "C:\\Users\\snowl\\Documents\\CS\\csc258\\" \
             "final_project\\optimization_python"
+THRESHOLD = 0.95
 
 
 class Network(object):
@@ -39,7 +40,7 @@ class Network(object):
 
     def batch_gradient_descent(self, training_data: list, epochs: int, mini_batch_size: int
                                , eta: float, test_data: list) -> None:
-        """Train the network using mini-batch stochastic gradient descent"""
+        """Train the network using mini-batch gradient descent"""
         if test_data:
             n_test = len(test_data)
         n = len(training_data)
@@ -55,7 +56,7 @@ class Network(object):
                 successes = self.evaluate(test_data)
                 print("Epoch {0}: {1} / {2}".format(
                     j + 1, successes, n_test))
-                if successes / n_test > 0.95:
+                if successes / n_test > THRESHOLD:
                     self.write_data()
                     break
             else:

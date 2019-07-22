@@ -4,6 +4,9 @@ import mnist_loader
 DIRECTORY = "C:\\Users\\snowl\\Documents\\CS\\csc258\\" \
             "final_project\\optimization_python"
 MAX_MIN = (3, 3, 32, 32, 1, 3)
+EPOCHS = 50
+BATCH_SIZE = 10
+LEARNING_RATE = 0.1
 
 
 def build_lists(min_hidden: int, max_hidden: int, min_neurons: int,
@@ -55,6 +58,7 @@ if __name__ == '__main__':
 
     for test_size in test_sizes:
         net = network.Network(test_size)
-        net.batch_gradient_descent(training_data, 50, 10, 0.1, test_data=test_data)
+        net.batch_gradient_descent(
+            training_data, EPOCHS, BATCH_SIZE, LEARNING_RATE, test_data)
 
     find_optimal()
