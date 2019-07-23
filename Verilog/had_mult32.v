@@ -2,10 +2,10 @@ module had_mult32(x,y,z);
 	input  [1023:0] x, y;
 	output [1023:0] z;
 	
-	wire [31:0] x_arr [31:0];
-	wire [31:0] y_arr [31:0];
-	reg [63:0] z1_arr[31:0];
-	reg [31:0] z_arr [31:0];
+	wire signed [31:0] x_arr [31:0];
+	wire signed [31:0] y_arr [31:0];
+	reg signed [63:0] z1_arr[31:0];
+	reg signed [31:0] z_arr [31:0];
 
 
 	assign {x_arr[0], x_arr[1], x_arr[2], x_arr[3], x_arr[4], x_arr[5], x_arr[6], x_arr[7], x_arr[8], x_arr[9],
@@ -23,7 +23,7 @@ module had_mult32(x,y,z);
 		for(i=0; i<32; i=i+1)
 		begin
 			z1_arr[i] <= x_arr[i]*y_arr[i];
-			z_arr[i] <= z1_arr[i][55:24];			
+			z_arr[i] <= {z1_arr[63],z1_arr[i][54:24]};			
 		end
 	end
 	

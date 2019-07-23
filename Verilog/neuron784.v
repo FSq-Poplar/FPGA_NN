@@ -6,7 +6,7 @@ module neuron784(prev_activ, weights, bias, activ, sigma_prime);
 	output sigma_prime[31:0];
 	
 	wire [25087:0] wires;
-	wire [31:0] w1, w2
+	wire [31:0] w1, w2;
 	
 	had_mult784 hm (prev_activ, weights, wires);
 	
@@ -20,7 +20,7 @@ module neuron784(prev_activ, weights, bias, activ, sigma_prime);
 			sum = sum + wires[i +: 7];
 		end
 	end
-	sum = sum + bias;
+	assign sum = sum + bias;
 
 	sigmoid s (sum, w1);
 	mult m (1__0000_0000_0000_0000_0000_0000-w1, w1, w2);

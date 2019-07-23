@@ -3,10 +3,10 @@ module matrix_mult32x10(A,x,y);
 	input [319:0] x;		//10*32-1
 	output[1023:0] y;		//10*32-1
 
-	wire [31:0] A_arr [31:0][9:0];
-	wire [31:0] x_arr [9:0];
-	reg [63:0] y1_arr[31:0][9:0];
-	reg [31:0] y_arr [31:0][9:0];
+	wire signed [31:0] A_arr [31:0][9:0];
+	wire signed [31:0] x_arr [9:0];
+	reg signed [63:0] y1_arr[31:0][9:0];
+	reg signed [31:0] y_arr [31:0][9:0];
 	
 	assign {{A_arr[0][0], A_arr[0][1], A_arr[0][2], A_arr[0][3], A_arr[0][4], A_arr[0][5], A_arr[0][6], A_arr[0][7], A_arr[0][8], A_arr[0][9]},
 			  {A_arr[1][0], A_arr[1][1], A_arr[1][2], A_arr[1][3], A_arr[1][4], A_arr[1][5], A_arr[1][6], A_arr[1][7], A_arr[1][8], A_arr[1][9]},
@@ -52,9 +52,9 @@ module matrix_mult32x10(A,x,y);
 			begin
 				y1_arr[i][j] <= A_arr[i][j]*x_arr[j];
 				if (j==0)
-					y_arr[i][j] <= y1_arr[i][j][55:24];
+					y_arr[i][j] <= {y1_arr[i][j][63], y1_arr[i][j][54:24];
 				else
-					y_arr[i][j] <= y_arr[i][j-1] + y1_arr[i][j][55:24];
+					y_arr[i][j] <= y_arr[i][j-1] + {y1_arr[i][j][63], y1_arr[i][j][54:24]};
 			end
 		end
 	end

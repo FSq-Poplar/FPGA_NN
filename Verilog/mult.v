@@ -6,6 +6,8 @@ module mult(x,y,z);
 	wire signed [63:0] xy;
 	
 	assign xy = x*y;
-	assign z = xy[55:24];
+	assign z = {xy[63],xy[54:24]};
 
 endmodule
+
+//tested
