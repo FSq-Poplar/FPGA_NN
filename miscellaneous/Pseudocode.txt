@@ -1,0 +1,137 @@
+Sigmoid(input  x[0:63]
+	output y[0:63]):
+INITIALIZE
+IF (x <= -8):
+    y = 0
+ELIF (x <= -1.6):
+    y = 8 + x*0.015625
+ELIF (x <= 1.6):
+    y = 0.5 + x*0.25
+ELIF (x <= 8):
+    y = 0.875 - x*0.015625
+ELSE:
+    y = 1
+END
+#Note: piecewise linear approximation
+--------------------------------------------------------------------------------------------------------------
+
+Neuron_l(input (a^{l-1}) [0:n_{l-1}-1][0:63],
+	       (weights) [0:n_{l-1}-1][0:63],
+	       (bias)    	      [0:63],
+	 output(activ)	 	      [0:63],
+               (\sigma') 	      [0:63]):
+INITIALIZE
+wires[0:n_{l-1}-1][0:63] = hadamard_mult(a^{l-1}, weights)
+wire1[0:63] = wires[0] + \cdots + wires[n_{l-1}-1] + bias
+wire2[0:63] = sigmoid(wire1)
+wire3[0:63] = (1-wire2) * wire2
+activ = wire2
+\sigma' = wire3
+END
+--------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------
+Loss(input (answers) [0:n_L-1][0:63],
+	   (a^l)     [0:n_L-1][0:63],
+     output(loss)    [0:63]):
+INITIALIZE
+wires[0:n_L-1][0:63] = matrix_subt(answers, a^l)
+wire1[0:63]          = vec_mag(wires)
+wire2[0:63]	     = 0.5*wire1
+loss = wire2
+END
+--------------------------------------------------------------------------------------------------------------
+Nabla_loss(input (answers)   [0:n_L-1][0:63],
+	   	 (a^l)       [0:n_L-1][0:63],
+	   output(nabla_loss)[0:n_L-1][0:63]):
+INITIALIZE
+wires = matrix_subt(a^l, answers)
+nabla_loss = wires
+END
+--------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------
+Error_L(input (\nabla(C))    [0:n_L-1][0:63],
+	      (\sigma'(z^L)) [0:n_L-1][0:63],
+	output(\delta^L)     [0:n_L-1][0:63]):
+INITIALIZE
+wires[0:n_L-1][0:63] = hadamard_mult(\sigma'(z^L), \nabla(C))
+\delta^L = wires
+END
+--------------------------------------------------------------------------------------------------------------
+Error_l(input (w^{l+1})      [0:n_{l+1}-1][0:n_l][0:63],
+	      (\delta^{l+1}) [0:n_{l+1}-1]       [0:63],
+	      (\sigma'(z^l)) [0:n_l-1]           [0:63],
+        output(\delta^l)     [0:n_l-1]           [0:63]):
+INITIALIZE
+wires1[0:n_l-1][0:63] = matrix_mult  (w^{l+1}, \delta^{l+1})
+wires2[0:n_1-1][0:63] = hadamard_mult(\sigma'(z^l), wires1)
+\delta^l = wires2
+END
+#Note: 1 \leq l \leq L-1
+#Note: n_l = number of neurons in ith layer
+--------------------------------------------------------------------------------------------------------------
+Update_l(input (a^{l-1}T)              [0:n_l-1][0:63],
+	       (\delta^l) [0:n_l-1]             [0:63],
+	       (\eta)     			[0:63],
+	       (w^l)      [0:n_{l-1}-1][0:n_l-1][0:63],
+	       (b^l)      [0:n_l-1]		[0:63],
+	 output(w^l)      [0:n_{l-1}-1][0:n_l-1][0:63],
+	       (b^l)      	       [0:n_l-1][0:63]):
+INITIALIZE
+wires1 [0:n_{l-1}-1][0:n_l-1][0:63] = matrix_mult(a^{l-1}T, \delta^l)
+wires21[0:n_{l-1}-1][0:n_l-1][0:63] = scalar_mult(\eta, wires1)
+wires22[0:n_l-1][0:63]		    = scalar_mult(\eta, \delta^l)
+wires31[0:n_{l-1}-1][0:n_l-1][0:63] = matrix_subt(w^l, wires21)
+wires32[0:n_l-1][0:63]		    = matrix_subt(b^l, wires22)
+w^l = wires31
+b^l = wires32
+END
+--------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------
+#Neural_network():
+#Refer to schematic diagrams instead.
+--------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------
+Matrix_subt(input A [0:m-1][0:n-1][0:63]
+		  B [0:m-1][0:n-1][0:63]
+	   output C [0:m-1][0:n-1][0:63]):
+INITALIZE
+wires[0:m-1][0:n-1][0:63]
+for i in range(0,m):
+    for j in range(0,n):
+	wires[i][j] = A[i][j] - B[i][j]
+C = wires
+END
+#Note: Verilog has built in functions for add, mult of reals.
+--------------------------------------------------------------------------------------------------------------
+Scalar_mult(input  a [0:63]
+		   A [0:m-1][0:n-1][0:63]
+	    output B [0:m-1][0:n-1][0:63]):
+INITALIZE
+wires[0:m-1][0:n-1][0:63]
+for i in range(0,m):
+    for j in range(0,n):
+	wires[i][j] = a*A[i][j]
+B = wires
+END
+--------------------------------------------------------------------------------------------------------------
+Matrix_mult_lmn(input  A [0:l-1][0:m-1][0:63]
+		       B [0:m-1][0:n-1][0:63]
+		output C [0:l-1][0:n-1][0:63]):
+INITALIZE
+wires[0:l-1][0:n-1][0:63]
+for i in range(0,l):
+    for j in range(0,n):
+	for k in range(0,m):
+	    wires[i][j] = A[i][1]*B[1][j] + \cdots + A[i][m]*B[m][j]
+C = wires
+END
+--------------------------------------------------------------------------------------------------------------
+Hadamard_mult_m(input  x [0:m-1][0:63]
+		       y [0:m-1][0:63]
+		output z [0:m-1][0:63]):
+INITIALIZE
+wires[0:m-1][0:63]
+for i in range(0,m):
+    wires[i] = x[i]*y[i]
+z = wires
+END
