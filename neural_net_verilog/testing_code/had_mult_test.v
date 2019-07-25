@@ -2,10 +2,10 @@ module had_mult_test(x,y,z);
 	input [15:0] x, y;
 	output[15:0] z;
 	
-	wire [3:0] x_arr [3:0];
-	wire [3:0] y_arr [3:0];
-	reg [7:0] z1_arr [3:0];
-	reg [3:0] z_arr  [3:0];
+	wire signed [3:0] x_arr [3:0];
+	wire signed [3:0] y_arr [3:0];
+	reg signed [7:0] z1_arr [3:0];
+	reg signed [3:0] z_arr  [3:0];
 
 
 	assign {x_arr[0], x_arr[1], x_arr[2], x_arr[3]} = x;
@@ -17,7 +17,7 @@ module had_mult_test(x,y,z);
 		for(i=0; i<4; i=i+1)
 		begin
 			z1_arr[i] <= x_arr[i]*y_arr[i];
-			z_arr[i] <= z1_arr[i][3:0];			
+			z_arr[i] <= {z1_arr[i][7], z1_arr[i][3:1]};			
 		end
 	end
 	
