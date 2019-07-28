@@ -35,4 +35,4 @@ module nn_interface(CLOCK, KEY, PS2_CLK, PS2_DAT, VGA_CLK, VGA_HS, VGA_VS, VGA_B
     defparam master.drawcolour = 15'b111111111111111;
     defparam master.pixelx = 6'd10;
     defparam master.pixely = 6'd14;
-endmodule : nn_interface
+endmodule
