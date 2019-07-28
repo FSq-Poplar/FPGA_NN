@@ -26,3 +26,5 @@ python_simulation: python code used to test different setups of the network
 mouse_control and vga_adapter modules provided by the University of Toronto
 
 network.py and mnist_loader.py are modified versions of a network released by Michael Nielson (@mnielsen)
+
+image_to_mif.py is a modified version of Thomas Dendale's code (@Nananas)
