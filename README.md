@@ -10,7 +10,7 @@ It is designed with the MNIST database in mind; hence, images should be 28x28.
 ## Authors
 Wentao Cui @WentaoCui8
 
-Poplar Wang @FSq_Poplar
+Poplar Wang @FSq-Poplar
 
 ## Folders
 io_verilog: allows users to "write" a letter, which is passed to the network
