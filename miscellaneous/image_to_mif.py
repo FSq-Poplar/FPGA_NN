@@ -24,8 +24,8 @@ def image_to_mif():
 
     # Writing the values pixel by pixel onto the MIF file
     counter = 0
-    for x in range(0, img_width):
-        for y in range(0, img_height):
+    for y in range(0, img_height):
+        for x in range(0, img_width):
             r = pic.getpixel((x, y))[0] & 248
             g = pic.getpixel((x, y))[1] & 248
             b = pic.getpixel((x, y))[2] & 248
