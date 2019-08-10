@@ -202,7 +202,7 @@ module vga_adapter(
 	altsyncram	VideoMemory (
 				.wren_a (writeEn),
 				.wren_b (gnd),
-				.clock0 (de1clock), // write clock
+				.clock0 (clock), // write clock
 				.clock1 (clock_25), // read clock
 				.clocken0 (vcc), // write enable clock
 				.clocken1 (vcc), // read enable clock				
