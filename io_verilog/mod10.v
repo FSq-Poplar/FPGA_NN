@@ -7,7 +7,7 @@ module mod10(clock, inputx, outputx);
 
     always@(posedge clock)
         begin
-            for(i = 1; i < 15; i++)
+            for(i = 1; i < 15; i = i + 1)
                 begin
                     if(i == 1) check <= inputx;
                     else if(check > 10) check <= check - 10;
