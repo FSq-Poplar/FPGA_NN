@@ -11,12 +11,12 @@ module io_control(clk, reset, leftclick, draw, erase, color);
         begin
             case(current)
                 CHILL: begin
-                    if (erase) next = ERASE;
+                    if (reset) next = ERASE;
                     else if (leftclick) next = DRAW;
                     else next = CHILL;
                 end
                 DRAW: begin
-                    if (erase) next = ERASE;
+                    if (reset) next = ERASE;
                     else if (leftclick) next = DRAW;
                     else next = CHILL;
                 end
@@ -31,21 +31,20 @@ module io_control(clk, reset, leftclick, draw, erase, color);
             case(current)
                 CHILL: begin draw <= 1'b0; erase <= 1'b0; end
                 DRAW: begin draw <= 1'b1; erase <= 1'b0; end
-                ERASE: begin draw <= 1'b0; erase <= 1'b1; end
+                ERASE: begin draw <= 1'b1; erase <= 1'b1; end
             endcase
         end
 
     always@(*)
         begin
             if (leftclick) color <= 15'b000000000011111;
-            else if (erase) color <= 15'b111111111111111;
-            else color <= 15'b111110000000000; //IF YOU SEE RED YOU DUN GOOFED
+            else if (reset) color <= 15'b111111111111111;
         end
 
     //Current state reg
     always@(posedge clk)
         begin
-            if(!reset)
+            if(reset)
                 current <= ERASE;
             else
                 current <= next;
