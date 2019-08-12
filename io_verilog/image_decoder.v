@@ -3,7 +3,7 @@ module image_decoder(clk,reset,xbad,ybad,leftclick,img);
     input clk, reset;
     input [8:0] xbad,ybad;
     input leftclick;
-    output reg [195:0] img;
+    output reg [48:0] img;
 
     wire [8:0] x,y;
     assign x = xbad - 9'd90;
@@ -12,9 +12,9 @@ module image_decoder(clk,reset,xbad,ybad,leftclick,img);
     integer i,j;
     always @*
         begin
-            for(i=0; i<14; i=i+1)
+            for(i=0; i<7; i=i+1)
                 begin
-                    if(10*i == x)
+                    if(20*i == x)
                         j <= i;
                 end
         end
@@ -23,9 +23,9 @@ module image_decoder(clk,reset,xbad,ybad,leftclick,img);
     integer k,l;
     always @*
         begin
-            for(k=0; k<14; k=k+1)
+            for(k=0; k<7; k=k+1)
                 begin
-                    if(14*k == y)
+                    if(28*k == y)
                         l <= k;
                 end
         end
@@ -34,9 +34,9 @@ module image_decoder(clk,reset,xbad,ybad,leftclick,img);
     always @(posedge clk)
         begin
             if (reset == 1'b1)
-                img <= 784'b0;
+                img <= 49'b0;
             else if (leftclick == 1'b1)
-                img[14*l+j] <= 1;
+                img[7*l+j] <= 1;
         end
 
 endmodule
