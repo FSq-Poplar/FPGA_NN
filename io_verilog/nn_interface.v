@@ -1,17 +1,19 @@
 module nn_interface(CLOCK_50, KEY, PS2_CLK, PS2_DAT, VGA_CLK, VGA_HS, VGA_VS, VGA_BLANK_N,
-    VGA_SYNC_N, VGA_R, VGA_G, VGA_B);
+    VGA_SYNC_N, VGA_R, VGA_G, VGA_B, LEDR, IMG);
     input CLOCK_50;
     input[3:0] KEY;
     inout PS2_CLK, PS2_DAT;
     output VGA_CLK, VGA_HS, VGA_VS, VGA_BLANK_N, VGA_SYNC_N;
     output[9:0]	VGA_R, VGA_G, VGA_B;
-//	 output reg[783:0] img;
+    output[9:0] LEDR;
+    output[195:0] IMG;
     wire count_reset, usererase;
     wire draw, erase, slow_clock;
     wire[8:0] x, y;
     wire[14:0] color;
     reg[8:0] mousex, mousey, drawx, drawy;
     reg leftclick, rightclick;
+    wire[195:0] wooyer;
     reg[3:0] count;
 
     assign count_reset = KEY[3];
@@ -42,5 +44,8 @@ module nn_interface(CLOCK_50, KEY, PS2_CLK, PS2_DAT, VGA_CLK, VGA_HS, VGA_VS, VG
 
     io_control control(slow_clock, usererase, leftclick, draw, erase, color);
 
-//	 image_decoder decoder(CLOCK_50, count_reset, drawx + 1, drawy + 7, leftclick, img);
+    image_decoder decoder(CLOCK_50, usererase, drawx + 1, drawy + 7, leftclick, wooyer);
+
+    assign LEDR[9:0] = wooyer[9:0];
+    assign IMG = wooyer;
 endmodule
