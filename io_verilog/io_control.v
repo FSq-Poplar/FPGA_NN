@@ -27,7 +27,6 @@ module io_control(clk, reset, leftclick, draw, erase, color);
 
     always@(*)
         begin
-            //"when someone looks at our code, they'll think we're autistic" -Wentao
             case(current)
                 CHILL: begin draw <= 1'b0; erase <= 1'b0; end
                 DRAW: begin draw <= 1'b1; erase <= 1'b0; end
