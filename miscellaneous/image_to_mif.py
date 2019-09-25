@@ -1,10 +1,9 @@
 from PIL import Image
+import os
 
 # Image directories
-input_image = "C:\\Users\\snowl\\Documents\\CS\\csc258\\final_project" \
-                "\\io_verilog\\background.png"
-output_mif = "C:\\Users\\snowl\\Documents\\CS\\csc258\\final_project" \
-                 "\\io_verilog\\background.mif"
+input_image = os.getcwd() + os.sep + "background.png"
+output_mif = os.getcwd() + os.sep + "background.mif"
 
 header = "WIDTH=15;\n{0}\nADDRESS_RADIX=HEX;" \
           "\nDATA_RADIX=HEX;\n\nCONTENT BEGIN\n"
@@ -14,7 +13,7 @@ def image_to_mif():
     """Converts an input image into a MIF file"""
     # Setup
     pic = Image.open(input_image)
-    mif_output = open(output_mif, 'w')
+    mif_output = open(output_mif, 'w+')
     img_width = pic.size[0]
     img_height = pic.size[1]
 

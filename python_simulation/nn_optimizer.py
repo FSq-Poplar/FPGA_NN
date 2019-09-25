@@ -1,8 +1,8 @@
 import network
 import mnist_loader
+import os
 
-DIRECTORY = "C:\\Users\\snowl\\Documents\\CS\\csc258\\" \
-            "final_project\\optimization_python"
+DIRECTORY = os.getcwd()
 MAX_MIN = (3, 3, 32, 32, 1, 3)
 EPOCHS = 50
 BATCH_SIZE = 10

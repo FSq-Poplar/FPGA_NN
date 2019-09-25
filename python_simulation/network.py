@@ -1,8 +1,8 @@
 import random
 import numpy as np
+import os
 
-DIRECTORY = "C:\\Users\\snowl\\Documents\\CS\\csc258\\" \
-            "final_project\\optimization_python"
+DIRECTORY = os.getcwd()
 THRESHOLD = 0.95
 
 
@@ -124,7 +124,7 @@ class Network(object):
 
     def write_data(self) -> None:
         """Adds the data of the neural network to the tracking file"""
-        new_file = DIRECTORY + "\\possible_setups.txt"
+        new_file = DIRECTORY + os.sep + "possible_setups.txt"
         with open(new_file, "a") as possible_setups:
             write = str(self.sizes).strip("[")
             write = write.strip("]")

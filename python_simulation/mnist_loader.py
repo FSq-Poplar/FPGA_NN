@@ -1,6 +1,7 @@
 import _pickle as cPickle
 import gzip
 import numpy as np
+import os
 
 
 def load_data():
@@ -9,8 +10,7 @@ def load_data():
     neural network
     Updated for Python 3 and clarity
     """
-    f = gzip.open('C:\\Users\\snowl\\Documents\\CS\\csc258\\final_project'
-                  '\\optimization_python\\data\\mnist.pkl.gz', 'rb')
+    f = gzip.open(os.getcwd() + os.sep + "data" + os.sep + "mnist.pkl.gz")
     training_data, validation_data, test_data = \
         cPickle.load(f, encoding='iso-8859-1')
     f.close()
